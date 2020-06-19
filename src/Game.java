@@ -2,16 +2,13 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.*;
+import javax.swing.border.Border;
 
 public class Game extends JPanel{
     public final int boardY = 600;
     public final int boardX = 600;
-    //private final int dotSize = 10;
+    private boolean gameOver = false;
     int score = 0;
-
-
-
-
     Point point = new Point(this);
     Snake snake = new Snake(this);
 
@@ -19,10 +16,9 @@ public class Game extends JPanel{
     public Game() {
         JFrame frame = new JFrame("Snake");
         frame.add(this);
-        frame.setSize(boardX,boardY);
+        frame.setSize(boardX+100,boardY+100);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
         addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {} //pause menu?
@@ -33,8 +29,6 @@ public class Game extends JPanel{
             public void keyReleased(KeyEvent e) {snake.keyPressed(e);}
         });
         setFocusable(true);
-
-
     }
 
 
@@ -46,13 +40,15 @@ public class Game extends JPanel{
         snake.paint(g2d);
         point.paint(g2d);
         g.drawString("Score " + score, 0, 20);
+        g.setColor(Color.YELLOW);
+        g.drawRect(0,0,boardX,boardY);
         this.setBackground(Color.BLACK);
     }
 
     public void move() {
         snake.move();
         try {
-            Thread.sleep(10);
+            Thread.sleep(120);
         } catch (Exception e){}
     }
 
@@ -60,21 +56,17 @@ public class Game extends JPanel{
         score++;
     }
 
-
+    public void gameOver( Graphics g) {
+        g.setColor(Color.RED);
+        g.drawString("You Died", 200,200);
+        gameOver = true;
+    }
 
     public static void main(String[] args){
         Game game = new Game();
-
-        while (true){
+        while (!game.gameOver){
             game.repaint();
             game.move();
-
-            try{
-                Thread.sleep(120);
-            } catch (Exception e){
-                System.out.println("You done broke it");
-            }
         }
     }
-
 }

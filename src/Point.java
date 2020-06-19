@@ -10,9 +10,8 @@ public class Point {
 
     public Point (Game game){
         this.game = game;
-        x = (int) (Math.random() * (game.boardY-rad));
-        y = (int) (Math.random() * (game.boardX-rad));
-
+        x = (int) (Math.random() * (game.boardY-rad*2));
+        y = (int) (Math.random() * (game.boardX-rad*2));
     }
 
     public void paint (Graphics2D g) {
@@ -21,9 +20,10 @@ public class Point {
     }
 
     public void newSpot () {
-        x = (int) (Math.random() * (game.boardX));
-        y = (int) (Math.random() * (game.boardY));
-        if (x > game.boardX | x < 0 | y > game.boardY | y < 0 ){
+        x = (int) (Math.random() * (game.boardX-(rad*2)));
+        y = (int) (Math.random() * (game.boardY-(rad*2)));
+
+        if (x+rad > game.boardX | x < 0 | y+rad> game.boardY | y < 0 ){
             System.out.println("Outta bounds!");
             newSpot();
         }

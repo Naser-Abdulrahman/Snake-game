@@ -4,8 +4,6 @@ import java.awt.event.KeyEvent;
 public class Snake {
     Node head;
     Node tail;
-    private final static int headx = 250;
-    private final static int heady = 250;
     private final Game game;
     int xa = 0;
     int ya = 0;
@@ -13,7 +11,9 @@ public class Snake {
 
     public Snake (Game game) {
         this.game = game;
-        head = new Node(headx,heady);
+        int headx = game.boardX/2;
+        int heady = game.boardY/2;
+        head = new Node(headx, heady, game);
         head.setHead();
     }
 
@@ -29,10 +29,10 @@ public class Snake {
     public void grow(){
         Node temp;
         if (tail == null) {
-            temp = new Node (head.x, head.y);
+            temp = new Node (head.x, head.y, game);
             head.setNext(temp);
         }else {
-            temp = new Node (tail.x,tail.y);
+            temp = new Node (tail.x,tail.y, game);
             tail.setNext(temp);
         }
         tail = temp;
@@ -45,10 +45,8 @@ public class Snake {
         else if (e.getKeyCode() == KeyEvent.VK_DOWN && this.ya != -head.rad){ ya = head.rad; xa = 0;}
     }
     public void paint (Graphics2D g){
-
         head.draw(g);
     }
-
 
     public boolean collision() {
         return head.getBounds().intersects(game.point.getBounds());
